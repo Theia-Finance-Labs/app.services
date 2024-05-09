@@ -2,18 +2,7 @@ proxy:
   title: Crispy Apps
   landing-page: /
   port: 8080
-  authentication: simple
-  admin-groups: admins
-  users:
-  - name: admin
-    password: yefenabi95
-    groups: admins
-  - name: defaultuser
-    password: gegiciho53
-    groups: users
-  - name: free_user
-    password: open
-    groups: free_users
+  authentication: none
   # Kubernetes specific configuration
   container-backend: kubernetes
   kubernetes:
@@ -35,21 +24,18 @@ proxy:
       display-name: Apps Documentation
       container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4000)"]
       container-image: registry.digitalocean.com/theia-1in1000-shinyapps/apps_1in1000_doc:latest
-      access-groups: ["admins", "users", "free_users"]
     - id: st_app
       port: 5000 
       display-name: GDP Stress Test
       description: "Banks Climate stress tests on GDP"
       container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 5000)"]
       container-image: registry.digitalocean.com/theia-1in1000-shinyapps/st_app:latest
-      access-groups: ["admins", "users", "free_users"]
     - id: equities_app
       port: 6000 
       display-name: Equities Stress Test
       description: "Climate stress test for Equities"
       container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 6000)"]
       container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
-      access-groups: ["admins", "users"]
       container-env:
         TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
         CRISPY_MODE: "equity"
@@ -70,7 +56,6 @@ proxy:
       description: "Climate stress test for Bonds&Loans"
       container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 7000)"]
       container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
-      access-groups: ["admins", "users"]
       container-env:
         TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
         CRISPY_MODE: "fixed_income"
