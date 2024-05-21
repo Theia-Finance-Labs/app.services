@@ -1,0 +1,23 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+.vscode
+.Renviron
+rsconnect
+
+.env
+
+# project specific 
+scripts/raw_data
+private_repos/
+workspace/
+app/data
+node_modules/
+package.json
+cypress.config.js
+package-lock.json
+scripts/trisk_knative/st_inputs/*
+private_test.sh
+
