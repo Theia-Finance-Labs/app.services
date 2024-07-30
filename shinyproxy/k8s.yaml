@@ -22,15 +22,15 @@ spec:
         envFrom:
         - secretRef:
             name: db-credentials
-      affinity: 
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: doks.digitalocean.com/node-pool
-                operator: In
-                values:
-                - shinyproxy-pool
+      # affinity: 
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: doks.digitalocean.com/node-pool
+      #           operator: In
+      #           values:
+      #           - shinyproxy-pool
 ---
 apiVersion: v1
 kind: Service
@@ -125,6 +125,7 @@ spec:
        ingress:
          class: nginx
 ---
+# HTTPS PART
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -136,4 +137,4 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - apps.1in1000.com         
+  - apps.1in1000.com
