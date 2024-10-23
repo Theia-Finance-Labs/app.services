@@ -23,50 +23,75 @@ proxy:
       port: 4000 
       display-name: Apps Documentation
       container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4000)"]
-      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/apps_1in1000_doc:latest
+      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/apps_1in1000_doc:1.0
     - id: st_app
-      port: 5000 
+      port: 4001
       display-name: GDP Stress Test
       description: "Banks Climate stress tests on GDP"
-      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 5000)"]
+      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4001)"]
       container-image: registry.digitalocean.com/theia-1in1000-shinyapps/st_app:latest
-    - id: equities_app
-      port: 6000 
-      display-name: Equities Stress Test
-      description: "Climate stress test for Equities"
-      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 6000)"]
-      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
-      container-env:
-        TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
-        CRISPY_MODE: "equity"
+    # - id: equities_app
+    #   port: 4002 
+    #   display-name: Equities Stress Test
+    #   description: "Climate stress test for Equities"
+    #   container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4002)"]
+    #   container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
+    #   container-env:
+    #     TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
+    #     CRISPY_MODE: "equity"
+    #   # kubernetes-pod-patches adds the k8s secret db-credentials in the current namespace to the container's env vars
+    #   kubernetes-pod-patches: |
+    #     - op: add
+    #       path: /spec/containers/0/envFrom
+    #       value:
+    #         - secretRef:
+    #             name: db-credentials 
+    #   # container-memory-request: 500Mi
+    #   # container-memory-limit: 1Gi
+    #   # container-cpu-request: 500m
+    #   # container-cpu-limit: 1
+    # - id: loans_app
+    #   port: 4003 
+    #   display-name: Bonds&Loans Stress Test
+    #   description: "Climate stress test for Bonds&Loans"
+    #   container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4003)"]
+    #   container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
+    #   container-env:
+    #     TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
+    #     CRISPY_MODE: "fixed_income"
+    #   # kubernetes-pod-patches adds the k8s secret db-credentials in the current namespace to the container's env vars
+    #   kubernetes-pod-patches: |
+    #     - op: add
+    #       path: /spec/containers/0/envFrom
+    #       value:
+    #         - secretRef:
+    #             name: db-credentials       
+    - id: portfolio_app
+      port: 4004 
+      display-name: Portfolio Analysis
+      description: "Climate stress test against a portfolio"
+      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4004)"]
+      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/app-st-portfolio:1.0
       # kubernetes-pod-patches adds the k8s secret db-credentials in the current namespace to the container's env vars
       kubernetes-pod-patches: |
         - op: add
           path: /spec/containers/0/envFrom
           value:
             - secretRef:
-                name: db-credentials 
-      # container-memory-request: 500Mi
-      # container-memory-limit: 1Gi
-      # container-cpu-request: 500m
-      # container-cpu-limit: 1
-    - id: loans_app
-      port: 7000 
-      display-name: Bonds&Loans Stress Test
-      description: "Climate stress test for Bonds&Loans"
-      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 7000)"]
-      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/crispy_app:latest
-      container-env:
-        TRISK_API_SERVICE: http://trisk-api.default.svc.cluster.local
-        CRISPY_MODE: "fixed_income"
+                name: db-credentials                         
+    - id: sensitivity_app
+      port: 4010
+      display-name: Scenarios sensitivity Analysis
+      description: "Compare trajectories between multiple runs"
+      container-cmd: ["R", "-e", "shiny::runApp(host = \"0.0.0.0\", port = 4010)"]
+      container-image: registry.digitalocean.com/theia-1in1000-shinyapps/app-st-sensitivity:1.0
       # kubernetes-pod-patches adds the k8s secret db-credentials in the current namespace to the container's env vars
       kubernetes-pod-patches: |
         - op: add
           path: /spec/containers/0/envFrom
           value:
             - secretRef:
-                name: db-credentials 
-
+                name: db-credentials      
 logging:
   file:
     name: shinyproxy.log
